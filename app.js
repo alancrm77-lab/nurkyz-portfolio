@@ -9,7 +9,7 @@ const CONFIG = {
   showRates: true,
   year: 2026,
   // Web3Forms access key — get a free one at https://web3forms.com (tied to your email).
-  web3formsKey: 'YOUR_ACCESS_KEY',
+  web3formsKey: '9d4a7569-8775-4c9f-b242-d8925fbd6401',
 };
 
 /* ---- Bilingual copy ---- */
