@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Hanken Grotesk', sans-serif; -webkit-font-smoothing: antialiased; }
+  a { text-decoration: none; color: inherit; }
+  ::selection { background: #FF4D8D; color: #fff; }
+  @keyframes nk-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes nk-float { 0%,100% { transform: translateY(0) rotate(var(--r,0deg)); } 50% { transform: translateY(-12px) rotate(var(--r,0deg)); } }
+  @keyframes nk-blink { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+  @keyframes nk-spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+</style>
+</helmet>
+
+<div style="background: #FFF4F7; color: #2A1822; overflow-x: hidden; min-height: 100vh;">
+
+  <nav style="position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 16px 40px; background: rgba(255,244,247,0.82); backdrop-filter: blur(14px); border-bottom: 1.5px solid #FFD6E4;">
+    <a href="#top" style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 22px; letter-spacing: -0.02em; display: flex; align-items: center; gap: 8px;">
+      <span style="width: 12px; height: 12px; border-radius: 50%; background: #FF4D8D; display: inline-block;"></span>
+      Nurkyz
+    </a>
+    <div style="display: flex; align-items: center; gap: 28px; font-weight: 600; font-size: 15px;">
+      <a href="#about" style="opacity: .8;">{{ c.nav.about }}</a>
+      <a href="#work" style="opacity: .8;">{{ c.nav.work }}</a>
+      <a href="#podcast" style="opacity: .8;">{{ c.nav.podcast }}</a>
+      <a href="#services" style="opacity: .8;">{{ c.nav.services }}</a>
+    </div>
+    <div style="display: flex; align-items: center; gap: 14px;">
+      <div style="display: flex; align-items: center; background: #fff; border: 1.5px solid #FFD6E4; border-radius: 999px; padding: 3px;">
+        <button type="button" onClick="{{ setEn }}" style="border: none; border-radius: 999px; font: inherit; font-weight: 700; font-size: 13px; padding: 6px 14px; cursor: pointer; background: {{ enBg }}; color: {{ enFg }};">EN</button>
+        <button type="button" onClick="{{ setRu }}" style="border: none; border-radius: 999px; font: inherit; font-weight: 700; font-size: 13px; padding: 6px 14px; cursor: pointer; background: {{ ruBg }}; color: {{ ruFg }};">RU</button>
+      </div>
+      <a href="#contact" style="background: #2A1822; color: #fff; padding: 11px 22px; border-radius: 999px; font-weight: 700; font-size: 15px;" style-hover="background: #FF4D8D;">{{ c.nav.contact }}</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header id="top" data-screen-label="Hero" style="position: relative; max-width: 1280px; margin: 0 auto; padding: 70px 40px 40px; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 56px; align-items: center;">
+    <div>
+      <div style="display: inline-flex; align-items: center; gap: 9px; background: #fff; border: 1.5px solid #FFD6E4; border-radius: 999px; padding: 8px 16px; font-weight: 600; font-size: 14px; margin-bottom: 26px;">
+        <span style="width: 9px; height: 9px; border-radius: 50%; background: #3FD17A; display: inline-block; animation: nk-blink 1.6s infinite;"></span>
+        {{ c.heroBadge }}
+      </div>
+      <p style="font-size: 22px; font-weight: 500; color: #6B5560; margin-bottom: 6px;">{{ c.heroPre }}</p>
+      <h1 style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: clamp(64px, 10vw, 132px); line-height: 0.86; letter-spacing: -0.04em; margin-bottom: 22px;">
+        {{ c.heroName }}<span style="color: #FF4D8D;">.</span>
+      </h1>
+      <p style="font-family: 'Instrument Serif', serif; font-style: italic; font-size: clamp(24px, 3.2vw, 38px); line-height: 1.12; color: #2A1822; margin-bottom: 20px; max-width: 18ch;">{{ c.heroRole }}</p>
+      <p style="font-size: 18px; line-height: 1.55; color: #6B5560; max-width: 44ch; margin-bottom: 34px;">{{ c.heroDesc }}</p>
+      <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+        <a href="#contact" style="background: #FF4D8D; color: #fff; padding: 16px 30px; border-radius: 999px; font-weight: 700; font-size: 17px; box-shadow: 0 10px 24px -8px rgba(255,77,141,0.6);" style-hover="transform: translateY(-2px);">{{ c.ctaPrimary }}</a>
+        <a href="#podcast" style="background: #fff; border: 1.5px solid #2A1822; color: #2A1822; padding: 16px 30px; border-radius: 999px; font-weight: 700; font-size: 17px;" style-hover="background: #2A1822; color: #fff;">{{ c.ctaSecondary }}</a>
+      </div>
+    </div>
+
+    <div style="position: relative; aspect-ratio: 4/5;">
+      <div style="position: absolute; inset: 0; border-radius: 28px; overflow: hidden; border: 2px solid #2A1822; background-image: repeating-linear-gradient(45deg, #FFD6E4 0 14px, #FFCBDD 14px 28px); display: flex; align-items: flex-end; justify-content: center; padding: 18px;">
+        <span style="font-family: ui-monospace, monospace; font-size: 12px; background: rgba(42,24,34,0.82); color: #fff; padding: 6px 12px; border-radius: 8px; letter-spacing: 0.02em;">PHOTO — hero portrait</span>
+      </div>
+      <div style="position: absolute; top: -18px; right: -10px; background: #9B6BFF; color: #fff; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 15px; padding: 12px 18px; border-radius: 14px; border: 2px solid #2A1822; --r: 8deg; animation: nk-float 5s ease-in-out infinite; box-shadow: 4px 4px 0 #2A1822;">{{ c.stickerA }}</div>
+      <div style="position: absolute; bottom: 34px; left: -26px; background: #BFF24A; color: #2A1822; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 15px; padding: 12px 18px; border-radius: 14px; border: 2px solid #2A1822; --r: -6deg; animation: nk-float 6s ease-in-out infinite; box-shadow: 4px 4px 0 #2A1822;">{{ c.stickerB }}</div>
+      <div style="position: absolute; bottom: -22px; right: 30px; width: 64px; height: 64px; border-radius: 50%; background: #FF7A59; border: 2px solid #2A1822; display: flex; align-items: center; justify-content: center; animation: nk-spin 9s linear infinite;">
+        <span style="color: #fff; font-weight: 800; font-size: 22px;">✦</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- MARQUEE -->
+  <div style="background: #2A1822; color: #fff; padding: 18px 0; overflow: hidden; white-space: nowrap; border-top: 2px solid #2A1822; border-bottom: 2px solid #2A1822;">
+    <div style="display: inline-flex; gap: 0; animation: nk-marquee 26s linear infinite; will-change: transform;">
+      <span style="display: inline-flex; gap: 0;">
+        <sc-for list="{{ c.marquee }}" as="word" hint-placeholder-count="6">
+          <span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 30px; padding: 0 28px;">{{ word }}</span>
+          <span style="color: #FF4D8D; font-size: 30px; align-self: center;">✦</span>
+        </sc-for>
+      </span>
+      <span style="display: inline-flex; gap: 0;" aria-hidden="true">
+        <sc-for list="{{ c.marquee }}" as="word" hint-placeholder-count="6">
+          <span style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 30px; padding: 0 28px;">{{ word }}</span>
+          <span style="color: #FF4D8D; font-size: 30px; align-self: center;">✦</span>
+        </sc-for>
+      </span>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <sc-if value="{{ showStats }}" hint-placeholder-val="{{ true }}">
+  <section data-screen-label="Stats" style="max-width: 1280px; margin: 0 auto; padding: 64px 40px 28px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
+    <sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+      <div style="background: #fff; border: 1.5px solid #FFD6E4; border-radius: 22px; padding: 28px 24px;">
+        <div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 46px; line-height: 1; letter-spacing: -0.03em; color: {{ s.color }};">{{ s.num }}</div>
+        <div style="margin-top: 10px; font-weight: 600; color: #6B5560; font-size: 15px;">{{ s.label }}</div>
+      </div>
+    </sc-for>
+  </section>
+  </sc-if>
+
+  <!-- ABOUT -->
+  <section id="about" data-screen-label="About" style="max-width: 1280px; margin: 0 auto; padding: 64px 40px; display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 56px; align-items: center;">
+    <div style="position: relative; aspect-ratio: 1/1;">
+      <div style="position: absolute; inset: 0; border-radius: 24px; overflow: hidden; border: 2px solid #2A1822; background-image: repeating-linear-gradient(-45deg, #E9D8FF 0 14px, #DECBFF 14px 28px); display: flex; align-items: flex-end; justify-content: center; padding: 16px; box-shadow: 8px 8px 0 #9B6BFF;">
+        <span style="font-family: ui-monospace, monospace; font-size: 12px; background: rgba(42,24,34,0.82); color: #fff; padding: 6px 12px; border-radius: 8px;">PHOTO — candid / lifestyle</span>
+      </div>
+    </div>
+    <div>
+      <span style="display: inline-block; background: #FFD6E4; color: #C2185B; font-weight: 700; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; padding: 7px 14px; border-radius: 999px; margin-bottom: 20px;">{{ c.aboutKicker }}</span>
+      <h2 style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: clamp(34px, 4.4vw, 52px); line-height: 1.02; letter-spacing: -0.03em; margin-bottom: 24px;">{{ c.aboutTitle }} <span style="font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; color: #FF4D8D;">{{ c.aboutTitleAccent }}</span></h2>
+      <p style="font-size: 18px; line-height: 1.65; color: #6B5560; margin-bottom: 18px;">{{ c.aboutP1 }}</p>
+      <p style="font-size: 18px; line-height: 1.65; color: #6B5560; margin-bottom: 28px;">{{ c.aboutP2 }}</p>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+        <sc-for list="{{ c.aboutTags }}" as="tag" hint-placeholder-count="5">
+          <span style="background: #fff; border: 1.5px solid #2A1822; border-radius: 999px; padding: 9px 18px; font-weight: 600; font-size: 15px;">{{ tag }}</span>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section id="work" data-screen-label="Work" style="max-width: 1280px; margin: 0 auto; padding: 56px 40px;">
+    <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 36px; flex-wrap: wrap;">
+      <div>
+        <span style="display: inline-block; background: #FFD6E4; color: #C2185B; font-weight: 700; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; padding: 7px 14px; border-radius: 999px; margin-bottom: 16px;">{{ c.workKicker }}</span>
+        <h2 style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: clamp(34px, 4.4vw, 52px); line-height: 1.0; letter-spacing: -0.03em; max-width: 16ch;">{{ c.workTitle }}</h2>
+      </div>
+      <p style="color: #6B5560; font-size: 16px; max-width: 30ch; font-weight: 500;">{{ c.workNote }}</p>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px;">
+      <sc-for list="{{ portfolio }}" as="item" hint-placeholder-count="6">
+        <a href="#contact" style="display: block; border-radius: 22px; overflow: hidden; border: 2px solid #2A1822; background: #fff;" style-hover="transform: translateY(-4px);">
+          <div style="aspect-ratio: 4/5; background-image: {{ item.stripe }}; position: relative; display: flex; align-items: flex-start; justify-content: space-between; padding: 16px;">
+            <span style="background: {{ item.color }}; color: #fff; font-weight: 700; font-size: 13px; padding: 6px 12px; border-radius: 999px; border: 1.5px solid #2A1822;">{{ item.cat }}</span>
+            <span style="font-family: ui-monospace, monospace; font-size: 11px; background: rgba(42,24,34,0.82); color: #fff; padding: 5px 9px; border-radius: 7px;">{{ item.ph }}</span>
+          </div>
+          <div style="padding: 18px 18px 20px;">
+            <div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 21px; line-height: 1.15; letter-spacing: -0.02em;">{{ item.title }}</div>
+            <div style="margin-top: 8px; color: #6B5560; font-weight: 600; font-size: 15px;">{{ item.metric }}</div>
+          </div>
+        </a>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- PODCAST -->
+  <section id="podcast" data-screen-label="Podcast" style="background: #FF4D8D; color: #fff; margin-top: 40px; border-top: 2px solid #2A1822; border-bottom: 2px solid #2A1822;">
+    <div style="max-width: 1280px; margin: 0 auto; padding: 80px 40px; display: grid; grid-template-columns: 1fr 1.1fr; gap: 56px; align-items: center;">
+      <div>
+        <span style="display: inline-block; background: rgba(255,255,255,0.18); color: #fff; font-weight: 700; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; padding: 7px 14px; border-radius: 999px; margin-bottom: 20px;">{{ c.podcastKicker }}</span>
+        <h2 style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: clamp(40px, 5.5vw, 68px); line-height: 0.96; letter-spacing: -0.03em; margin-bottom: 22px;">{{ c.podcastTitle }}</h2>
+        <p style="font-size: 19px; line-height: 1.6; color: rgba(255,255,255,0.92); margin-bottom: 32px; max-width: 40ch;">{{ c.podcastDesc }}</p>
+        <a href="https://www.youtube.com/@Kochmon_podcast1" target="_blank" style="display: inline-flex; align-items: center; gap: 12px; background: #fff; color: #2A1822; padding: 16px 28px; border-radius: 999px; font-weight: 700; font-size: 17px; border: 2px solid #2A1822;" style-hover="transform: translateY(-2px);">
+          <span style="width: 30px; height: 30px; border-radius: 50%; background: #FF4D8D; color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 13px;">▶</span>
+          {{ c.podcastCta }}
+        </a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <sc-for list="{{ c.episodes }}" as="ep" hint-placeholder-count="3">
+          <div style="display: flex; align-items: center; gap: 18px; background: #fff; color: #2A1822; border: 2px solid #2A1822; border-radius: 18px; padding: 16px 18px; box-shadow: 4px 4px 0 #2A1822;">
+            <div style="flex: none; width: 56px; height: 56px; border-radius: 14px; background-image: repeating-linear-gradient(45deg, #FFD6E4 0 8px, #FFCBDD 8px 16px); border: 1.5px solid #2A1822; display: flex; align-items: center; justify-content: center; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 18px;">{{ ep.num }}</div>
+            <div style="flex: 1; min-width: 0;">
+              <div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 18px; line-height: 1.2;">{{ ep.title }}</div>
+              <div style="margin-top: 4px; color: #6B5560; font-weight: 600; font-size: 14px;">{{ ep.meta }}</div>
+            </div>
+            <span style="flex: none; width: 38px; height: 38px; border-radius: 50%; background: #FF4D8D; color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 13px;">▶</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <sc-if value="{{ showRates }}" hint-placeholder-val="{{ true }}">
+  <section id="services" data-screen-label="Services" style="max-width: 1280px; margin: 0 auto; padding: 80px 40px;">
+    <div style="text-align: center; margin-bottom: 44px;">
+      <span style="display: inline-block; background: #FFD6E4; color: #C2185B; font-weight: 700; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; padding: 7px 14px; border-radius: 999px; margin-bottom: 16px;">{{ c.servicesKicker }}</span>
+      <h2 style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: clamp(34px, 4.4vw, 54px); line-height: 1.0; letter-spacing: -0.03em;">{{ c.servicesTitle }}</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px;">
+      <sc-for list="{{ services }}" as="sv" hint-placeholder-count="3">
+        <div style="background: {{ sv.bg }}; color: {{ sv.fg }}; border: 2px solid #2A1822; border-radius: 24px; padding: 32px 28px; display: flex; flex-direction: column; box-shadow: 6px 6px 0 #2A1822;">
+          <div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 24px; letter-spacing: -0.02em;">{{ sv.name }}</div>
+          <div style="margin: 14px 0 6px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 40px; letter-spacing: -0.03em;">{{ sv.price }}</div>
+          <p style="font-size: 15px; line-height: 1.5; opacity: 0.85; margin-bottom: 22px;">{{ sv.desc }}</p>
+          <div style="display: flex; flex-direction: column; gap: 11px; margin-bottom: 28px;">
+            <sc-for list="{{ sv.features }}" as="f" hint-placeholder-count="4">
+              <div style="display: flex; align-items: flex-start; gap: 10px; font-size: 15px; font-weight: 500;">
+                <span style="flex: none; margin-top: 2px;">✦</span><span>{{ f }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <a href="#contact" style="margin-top: auto; text-align: center; background: {{ sv.btnBg }}; color: {{ sv.btnFg }}; border: 1.5px solid #2A1822; padding: 13px 20px; border-radius: 999px; font-weight: 700; font-size: 16px;">{{ c.servicesBtn }}</a>
+        </div>
+      </sc-for>
+    </div>
+    <p style="text-align: center; margin-top: 22px; color: #6B5560; font-size: 14px; font-weight: 500;">{{ c.servicesFoot }}</p>
+  </section>
+  </sc-if>
+
+  <!-- BRANDS -->
+  <section data-screen-label="Brands" style="background: #fff; border-top: 2px solid #FFD6E4; border-bottom: 2px solid #FFD6E4;">
+    <div style="max-width: 1280px; margin: 0 auto; padding: 56px 40px;">
+      <p style="text-align: center; color: #6B5560; font-weight: 700; font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 30px;">{{ c.brandsKicker }}</p>
+      <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px;">
+        <sc-for list="{{ brands }}" as="b" hint-placeholder-count="6">
+          <div style="aspect-ratio: 5/2; border: 1.5px solid #FFD6E4; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 17px; color: #B79AA6; letter-spacing: 0.02em;">{{ b }}</div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section data-screen-label="Testimonials" style="max-width: 1280px; margin: 0 auto; padding: 80px 40px;">
+    <div style="text-align: center; margin-bottom: 40px;">
+      <span style="display: inline-block; background: #FFD6E4; color: #C2185B; font-weight: 700; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; padding: 7px 14px; border-radius: 999px; margin-bottom: 16px;">{{ c.testKicker }}</span>
+      <h2 style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: clamp(32px, 4.2vw, 50px); line-height: 1.0; letter-spacing: -0.03em;">{{ c.testTitle }}</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px;">
+      <sc-for list="{{ testimonials }}" as="t" hint-placeholder-count="3">
+        <div style="background: #fff; border: 2px solid #2A1822; border-radius: 22px; padding: 28px 26px; display: flex; flex-direction: column;">
+          <div style="font-size: 38px; line-height: 0.5; color: {{ t.color }}; font-family: 'Instrument Serif', serif;">&ldquo;</div>
+          <p style="font-size: 17px; line-height: 1.55; margin: 14px 0 22px; font-weight: 500;">{{ t.quote }}</p>
+          <div style="display: flex; align-items: center; gap: 12px; margin-top: auto;">
+            <span style="width: 42px; height: 42px; border-radius: 50%; background: {{ t.color }}; border: 1.5px solid #2A1822; flex: none;"></span>
+            <div>
+              <div style="font-weight: 700; font-size: 15px;">{{ t.name }}</div>
+              <div style="color: #6B5560; font-size: 13px; font-weight: 500;">{{ t.role }}</div>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" data-screen-label="Contact" style="background: #2A1822; color: #fff; border-top: 2px solid #2A1822;">
+    <div style="max-width: 1080px; margin: 0 auto; padding: 80px 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start;">
+      <div>
+        <span style="display: inline-block; background: rgba(255,255,255,0.14); color: #fff; font-weight: 700; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; padding: 7px 14px; border-radius: 999px; margin-bottom: 20px;">{{ c.contactKicker }}</span>
+        <h2 style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: clamp(36px, 5vw, 60px); line-height: 0.98; letter-spacing: -0.03em; margin-bottom: 22px;">{{ c.contactTitle }}</h2>
+        <p style="font-size: 18px; line-height: 1.6; color: rgba(255,255,255,0.8); margin-bottom: 30px; max-width: 36ch;">{{ c.contactDesc }}</p>
+        <a href="mailto:hello@nurkyz.com" style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: clamp(20px, 2.6vw, 28px); color: #FF8FB6; border-bottom: 2px solid #FF8FB6; padding-bottom: 2px;">hello@nurkyz.com</a>
+      </div>
+
+      <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+        <div style="background: #FF4D8D; border-radius: 24px; padding: 48px 32px; text-align: center; border: 2px solid #fff;">
+          <div style="font-size: 44px; margin-bottom: 12px;">✦</div>
+          <div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 28px; margin-bottom: 8px;">{{ c.sentTitle }}</div>
+          <p style="color: rgba(255,255,255,0.9); font-size: 16px;">{{ c.sentDesc }}</p>
+        </div>
+      </sc-if>
+      <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+        <div style="background: #fff; color: #2A1822; border-radius: 24px; padding: 30px; display: flex; flex-direction: column; gap: 16px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div>
+              <label style="display: block; font-weight: 700; font-size: 14px; margin-bottom: 7px;">{{ c.fName }}</label>
+              <input type="text" placeholder="{{ c.fNamePh }}" style="width: 100%; border: 1.5px solid #FFD6E4; border-radius: 12px; padding: 13px 14px; font: inherit; font-size: 15px; background: #FFF4F7;" />
+            </div>
+            <div>
+              <label style="display: block; font-weight: 700; font-size: 14px; margin-bottom: 7px;">{{ c.fBrand }}</label>
+              <input type="text" placeholder="{{ c.fBrandPh }}" style="width: 100%; border: 1.5px solid #FFD6E4; border-radius: 12px; padding: 13px 14px; font: inherit; font-size: 15px; background: #FFF4F7;" />
+            </div>
+          </div>
+          <div>
+            <label style="display: block; font-weight: 700; font-size: 14px; margin-bottom: 7px;">{{ c.fEmail }}</label>
+            <input type="email" placeholder="{{ c.fEmailPh }}" style="width: 100%; border: 1.5px solid #FFD6E4; border-radius: 12px; padding: 13px 14px; font: inherit; font-size: 15px; background: #FFF4F7;" />
+          </div>
+          <div>
+            <label style="display: block; font-weight: 700; font-size: 14px; margin-bottom: 7px;">{{ c.fMsg }}</label>
+            <textarea rows="4" placeholder="{{ c.fMsgPh }}" style="width: 100%; border: 1.5px solid #FFD6E4; border-radius: 12px; padding: 13px 14px; font: inherit; font-size: 15px; background: #FFF4F7; resize: vertical;"></textarea>
+          </div>
+          <button type="button" onClick="{{ send }}" style="background: #FF4D8D; color: #fff; border: none; padding: 16px; border-radius: 999px; font: inherit; font-weight: 700; font-size: 17px; cursor: pointer;" style-hover="background: #2A1822;">{{ c.fSubmit }}</button>
+        </div>
+      </sc-if>
+    </div>
+
+    <!-- FOOTER / LINK HUB -->
+    <footer style="border-top: 1.5px solid rgba(255,255,255,0.14);">
+      <div style="max-width: 1280px; margin: 0 auto; padding: 40px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;">
+        <div style="font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 26px; display: flex; align-items: center; gap: 9px;">
+          <span style="width: 12px; height: 12px; border-radius: 50%; background: #FF4D8D;"></span>Nurkyz
+        </div>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <sc-for list="{{ socials }}" as="so" hint-placeholder-count="4">
+            <a href="{{ so.url }}" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.18); border-radius: 999px; padding: 11px 18px; font-weight: 600; font-size: 15px;" style-hover="background: #FF4D8D; border-color: #FF4D8D;">
+              <span style="font-weight: 700;">{{ so.name }}</span>
+              <span style="opacity: 0.7;">{{ so.handle }}</span>
+            </a>
+          </sc-for>
+        </div>
+      </div>
+      <div style="max-width: 1280px; margin: 0 auto; padding: 0 40px 36px; color: rgba(255,255,255,0.5); font-size: 13px;">© {{ year }} Nurkyz · {{ c.footRights }}</div>
+    </footer>
+  </section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1280, &quot;height&quot;: 2400}, &quot;defaultLanguage&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;en&quot;, &quot;ru&quot;], &quot;default&quot;: &quot;en&quot;, &quot;tsType&quot;: &quot;'en' | 'ru'&quot;}, &quot;showStats&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;}, &quot;showRates&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;}}">
+class Component extends DCLogic {
+  state = { lang: this.props.defaultLanguage || 'en', sent: false };
+
+  D = {
+    en: {
+      nav: { about: 'About', work: 'Work', podcast: 'Podcast', services: 'Services', contact: 'Contact' },
+      heroBadge: 'Available for collabs',
+      heroPre: "Hi, I'm",
+      heroName: 'Nurkyz',
+      heroRole: 'Lifestyle creator & host of the Kochmon Podcast',
+      heroDesc: 'I make daily-life content that feels honest, warm and a little chaotic — and I help brands show up in my world without breaking the vibe.',
+      ctaPrimary: 'Work with me',
+      ctaSecondary: 'Watch the podcast',
+      stickerA: 'always filming',
+      stickerB: 'real, not perfect',
+      marquee: ['Lifestyle', 'Daily vlogs', 'Kochmon Podcast', 'Brand collabs', 'Storytelling', 'Real moments'],
+      aboutKicker: 'About me',
+      aboutTitle: 'Real life, on camera —',
+      aboutTitleAccent: 'with the volume up.',
+      aboutP1: "I'm Nurkyz, a lifestyle creator documenting the messy, funny, beautiful parts of everyday life. My audience sticks around because it feels like texting a friend, not watching an ad.",
+      aboutP2: "Off-camera I host the Kochmon Podcast, where the conversations get honest fast. Whether it's a 15-second reel or a full episode, I build trust — and that's what makes brand partnerships actually convert.",
+      aboutTags: ['Lifestyle', 'UGC', 'Podcasting', 'Storytelling', 'Reels & Shorts', 'Daily vlogs'],
+      workKicker: 'Selected work',
+      workTitle: 'Content that actually gets watched',
+      workNote: 'A snapshot of recent reels, collabs and series. Tap any to start a conversation.',
+      podcastKicker: 'Kochmon Podcast',
+      podcastTitle: 'Honest talks, zero filter',
+      podcastDesc: 'New episodes every week — candid conversations on life, relationships and the things nobody says out loud. Streaming on YouTube and everywhere you listen.',
+      podcastCta: 'Watch on YouTube',
+      episodes: [
+        { num: '12', title: 'Burnout, boundaries & saying no', meta: 'Latest · 48 min' },
+        { num: '11', title: 'Dating in your twenties', meta: '52 min' },
+        { num: '10', title: 'Building a life online', meta: '44 min' },
+      ],
+      servicesKicker: 'Work with me',
+      servicesTitle: 'Packages & rates',
+      services: [
+        { name: 'UGC Starter', price: 'from $350', desc: 'Native, scroll-stopping content for your channels.', features: ['1 vertical video (15–30s)', '2 rounds of revisions', 'Raw + edited files', 'Usage rights included'], bg: '#fff', fg: '#2A1822', btnBg: '#FF4D8D', btnFg: '#fff' },
+        { name: 'Creator Collab', price: 'from $900', desc: 'A full reel posted to my audience, made together.', features: ['1 reel on my profile', 'Story set (3 frames)', 'Concept + scripting', 'Performance recap'], bg: '#FF4D8D', fg: '#fff', btnBg: '#fff', btnFg: '#2A1822' },
+        { name: 'Podcast Feature', price: "let's talk", desc: 'Integrate your brand into the Kochmon Podcast.', features: ['Host-read segment', 'Episode + clips', 'Cross-posted on socials', 'Long-term partnerships'], bg: '#fff', fg: '#2A1822', btnBg: '#FF4D8D', btnFg: '#fff' },
+      ],
+      servicesBtn: 'Get started',
+      servicesFoot: 'Rates are starting points — every brief is custom. Tell me your goals and I\u2019ll send a tailored proposal.',
+      brandsKicker: 'Brands & partners',
+      testKicker: 'Kind words',
+      testTitle: 'What partners say',
+      testimonials: [
+        { quote: 'Nurkyz delivered content that felt completely native to her feed — our CTR doubled versus our usual creatives.', name: 'Aru K.', role: 'Marketing Lead, Beauty Brand', color: '#FF4D8D' },
+        { quote: 'Fast, professional and genuinely funny. The reel outperformed everything else we ran that month.', name: 'Daniel M.', role: 'Founder, DTC Startup', color: '#9B6BFF' },
+        { quote: 'Working with her on the podcast feature gave us a level of trust ads just can\u2019t buy.', name: 'Saule T.', role: 'Brand Manager', color: '#FF7A59' },
+      ],
+      contactKicker: "Let's talk",
+      contactTitle: 'Got a brand, a brief, or just a vibe?',
+      contactDesc: 'Tell me what you\u2019re building and how you\u2019d like to work together. I reply to every serious enquiry within 48 hours.',
+      fName: 'Your name', fNamePh: 'Jane Doe',
+      fBrand: 'Brand / company', fBrandPh: 'Acme Co.',
+      fEmail: 'Email', fEmailPh: 'you@brand.com',
+      fMsg: 'Tell me about it', fMsgPh: 'Campaign, timeline, budget range…',
+      fSubmit: 'Send enquiry',
+      sentTitle: "Got it — thank you!",
+      sentDesc: "I'll get back to you within 48 hours.",
+      footRights: 'All rights reserved.',
+    },
+    ru: {
+      nav: { about: 'Обо мне', work: 'Работы', podcast: 'Подкаст', services: 'Услуги', contact: 'Контакты' },
+      heroBadge: 'Открыта для коллабораций',
+      heroPre: 'Привет, я',
+      heroName: 'Нуркыз',
+      heroRole: 'Лайфстайл-криэйтор и ведущая подкаста Kochmon',
+      heroDesc: 'Я снимаю контент о настоящей жизни — честный, тёплый и немного хаотичный. И помогаю брендам органично вписаться в этот мир, не теряя вайба.',
+      ctaPrimary: 'Работать со мной',
+      ctaSecondary: 'Смотреть подкаст',
+      stickerA: 'всегда снимаю',
+      stickerB: 'честно, не идеально',
+      marquee: ['Лайфстайл', 'Влоги', 'Подкаст Kochmon', 'Коллаборации', 'Истории', 'Живые моменты'],
+      aboutKicker: 'Обо мне',
+      aboutTitle: 'Настоящая жизнь в кадре —',
+      aboutTitleAccent: 'на полной громкости.',
+      aboutP1: 'Я Нуркыз, лайфстайл-криэйтор. Снимаю смешные, тёплые и неидеальные моменты обычной жизни. Аудитория остаётся со мной, потому что это похоже на переписку с подругой, а не на рекламу.',
+      aboutP2: 'Вне кадра я веду подкаст Kochmon — здесь разговоры быстро становятся честными. Будь то 15-секундный рилс или целый выпуск, я строю доверие. Именно поэтому коллаборации с брендами работают.',
+      aboutTags: ['Лайфстайл', 'UGC', 'Подкаст', 'Сторителлинг', 'Reels & Shorts', 'Влоги'],
+      workKicker: 'Избранные работы',
+      workTitle: 'Контент, который реально смотрят',
+      workNote: 'Подборка свежих рилсов, коллабораций и рубрик. Нажмите на любой, чтобы начать разговор.',
+      podcastKicker: 'Подкаст Kochmon',
+      podcastTitle: 'Честные разговоры без фильтров',
+      podcastDesc: 'Новые выпуски каждую неделю — откровенно о жизни, отношениях и о том, о чём обычно молчат. Смотрите на YouTube и слушайте на всех площадках.',
+      podcastCta: 'Смотреть на YouTube',
+      episodes: [
+        { num: '12', title: 'Выгорание, границы и умение говорить «нет»', meta: 'Новый · 48 мин' },
+        { num: '11', title: 'Отношения в двадцать с чем-то', meta: '52 мин' },
+        { num: '10', title: 'Как строить жизнь онлайн', meta: '44 мин' },
+      ],
+      servicesKicker: 'Сотрудничество',
+      servicesTitle: 'Форматы и цены',
+      services: [
+        { name: 'UGC Старт', price: 'от $350', desc: 'Нативный контент, который останавливает скролл, для ваших каналов.', features: ['1 вертикальное видео (15–30с)', '2 раунда правок', 'Сырые + смонтированные файлы', 'Права на использование'], bg: '#fff', fg: '#2A1822', btnBg: '#FF4D8D', btnFg: '#fff' },
+        { name: 'Коллаборация', price: 'от $900', desc: 'Полноценный рилс на моей аудитории — делаем вместе.', features: ['1 рилс на моём профиле', 'Сторис (3 кадра)', 'Идея + сценарий', 'Отчёт по охватам'], bg: '#FF4D8D', fg: '#fff', btnBg: '#fff', btnFg: '#2A1822' },
+        { name: 'Интеграция в подкаст', price: 'обсудим', desc: 'Интеграция вашего бренда в подкаст Kochmon.', features: ['Нативное упоминание', 'Выпуск + нарезки', 'Кросс-постинг в соцсетях', 'Долгосрочные партнёрства'], bg: '#fff', fg: '#2A1822', btnBg: '#FF4D8D', btnFg: '#fff' },
+      ],
+      servicesBtn: 'Начать',
+      servicesFoot: 'Цены — это отправная точка, каждый бриф индивидуален. Расскажите о целях, и я пришлю персональное предложение.',
+      brandsKicker: 'Бренды и партнёры',
+      testKicker: 'Отзывы',
+      testTitle: 'Что говорят партнёры',
+      testimonials: [
+        { quote: 'Нуркыз сделала контент, который полностью вписался в её ленту — наш CTR вырос вдвое по сравнению с обычными креативами.', name: 'Ару К.', role: 'Маркетинг, бьюти-бренд', color: '#FF4D8D' },
+        { quote: 'Быстро, профессионально и по-настоящему смешно. Рилс обогнал всё, что мы запускали в том месяце.', name: 'Даниэль М.', role: 'Основатель, DTC-стартап', color: '#9B6BFF' },
+        { quote: 'Интеграция в подкаст дала нам уровень доверия, который рекламой просто не купишь.', name: 'Сауле Т.', role: 'Бренд-менеджер', color: '#FF7A59' },
+      ],
+      contactKicker: 'Давайте обсудим',
+      contactTitle: 'Есть бренд, бриф или просто идея?',
+      contactDesc: 'Расскажите, что вы создаёте и как хотели бы сотрудничать. Отвечаю на каждый серьёзный запрос в течение 48 часов.',
+      fName: 'Ваше имя', fNamePh: 'Иван Иванов',
+      fBrand: 'Бренд / компания', fBrandPh: 'Acme Co.',
+      fEmail: 'Email', fEmailPh: 'you@brand.com',
+      fMsg: 'Расскажите подробнее', fMsgPh: 'Кампания, сроки, бюджет…',
+      fSubmit: 'Отправить запрос',
+      sentTitle: 'Получено — спасибо!',
+      sentDesc: 'Я отвечу вам в течение 48 часов.',
+      footRights: 'Все права защищены.',
+    },
+  };
+
+  PORTFOLIO = [
+    { cat: 'Reel', color: '#FF4D8D', stripe: 'repeating-linear-gradient(45deg, #FFD6E4 0 14px, #FFCBDD 14px 28px)' },
+    { cat: 'Collab', color: '#9B6BFF', stripe: 'repeating-linear-gradient(-45deg, #E9D8FF 0 14px, #DECBFF 14px 28px)' },
+    { cat: 'Series', color: '#FF7A59', stripe: 'repeating-linear-gradient(45deg, #FFE0D4 0 14px, #FFD3C2 14px 28px)' },
+    { cat: 'Reel', color: '#2FB6FF', stripe: 'repeating-linear-gradient(-45deg, #D4EEFF 0 14px, #C2E6FF 14px 28px)' },
+    { cat: 'Vlog', color: '#BFF24A', stripe: 'repeating-linear-gradient(45deg, #EBF8C9 0 14px, #E0F3B3 14px 28px)' },
+    { cat: 'Collab', color: '#FF4D8D', stripe: 'repeating-linear-gradient(-45deg, #FFD6E4 0 14px, #FFCBDD 14px 28px)' },
+  ];
+
+  WORK = {
+    en: [
+      { title: 'A day in my life', metric: '1.2M views · saved 38K' },
+      { title: 'Skincare night routine', metric: 'Brand collab · 540K views' },
+      { title: 'Get ready with me', metric: 'Series · 12 episodes' },
+      { title: 'Trying viral recipes', metric: '890K views · 24K shares' },
+      { title: 'What I eat in a week', metric: 'Vlog · 410K views' },
+      { title: 'Honest product review', metric: 'Brand collab · 6.1% CTR' },
+    ],
+    ru: [
+      { title: 'Один день из моей жизни', metric: '1.2М просмотров · 38К сохр.' },
+      { title: 'Вечерний уход за кожей', metric: 'Коллаб · 540К просмотров' },
+      { title: 'Собираюсь со мной', metric: 'Рубрика · 12 выпусков' },
+      { title: 'Готовлю вирусные рецепты', metric: '890К просмотров · 24К репостов' },
+      { title: 'Что я ем за неделю', metric: 'Влог · 410К просмотров' },
+      { title: 'Честный обзор продукта', metric: 'Коллаб · CTR 6.1%' },
+    ],
+  };
+
+  STATS = {
+    en: [
+      { num: '120K+', label: 'Followers across platforms', color: '#FF4D8D' },
+      { num: '8M+', label: 'Monthly views', color: '#9B6BFF' },
+      { num: '40+', label: 'Brand collaborations', color: '#FF7A59' },
+      { num: '250K', label: 'Podcast listens', color: '#2FB6FF' },
+    ],
+    ru: [
+      { num: '120K+', label: 'Подписчиков на всех платформах', color: '#FF4D8D' },
+      { num: '8M+', label: 'Просмотров в месяц', color: '#9B6BFF' },
+      { num: '40+', label: 'Коллабораций с брендами', color: '#FF7A59' },
+      { num: '250K', label: 'Прослушиваний подкаста', color: '#2FB6FF' },
+    ],
+  };
+
+  BRANDS = ['STUDIO', 'MAISON', 'GLOW+', 'NOVA', 'LUME', 'VERTE'];
+
+  SOCIALS = [
+    { name: 'Instagram', handle: '@nurkyzkou_', url: 'https://www.instagram.com/nurkyzkou_/' },
+    { name: 'Instagram', handle: '@kochmon_podcast', url: 'https://www.instagram.com/kochmon_podcast/' },
+    { name: 'YouTube', handle: 'Kochmon Podcast', url: 'https://www.youtube.com/@Kochmon_podcast1' },
+    { name: 'Email', handle: 'hello@nurkyz.com', url: 'mailto:hello@nurkyz.com' },
+  ];
+
+  renderVals() {
+    const lang = this.state.lang;
+    const c = this.D[lang];
+    const portfolio = this.PORTFOLIO.map((p, i) => ({
+      ...p,
+      title: this.WORK[lang][i].title,
+      metric: this.WORK[lang][i].metric,
+      ph: 'thumbnail',
+    }));
+    const en = lang === 'en';
+    return {
+      lang, c, portfolio,
+      stats: this.STATS[lang],
+      services: c.services,
+      testimonials: c.testimonials,
+      brands: this.BRANDS,
+      socials: this.SOCIALS,
+      showStats: this.props.showStats ?? true,
+      showRates: this.props.showRates ?? true,
+      sent: this.state.sent,
+      notSent: !this.state.sent,
+      enBg: en ? '#FF4D8D' : 'transparent',
+      enFg: en ? '#fff' : '#2A1822',
+      ruBg: en ? 'transparent' : '#FF4D8D',
+      ruFg: en ? '#2A1822' : '#fff',
+      setEn: () => this.setState({ lang: 'en' }),
+      setRu: () => this.setState({ lang: 'ru' }),
+      send: () => this.setState({ sent: true }),
+      year: 2026,
+    };
+  }
+}
+</script>
+</body>
+</html>
