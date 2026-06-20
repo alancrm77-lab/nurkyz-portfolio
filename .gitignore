@@ -12,3 +12,10 @@ npm-debug.log*
 # Design handoff bundle — kept local, not published to the public repo
 chats/
 project/
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
