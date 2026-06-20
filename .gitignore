@@ -1,0 +1,14 @@
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Logs / deps (none required for this static site, but just in case)
+node_modules/
+npm-debug.log*
+
+# Design handoff bundle — kept local, not published to the public repo
+chats/
+project/

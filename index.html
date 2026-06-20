@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nurkyz — Lifestyle Creator & Host of the Kochmon Podcast</title>
+  <meta name="description" content="Portfolio of Nurkyz — lifestyle creator and host of the Kochmon Podcast. Brand collabs, UGC, reels and podcast features.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page">
+
+    <!-- NAV -->
+    <nav class="nav">
+      <a href="#top" class="brand">
+        <span class="brand-dot"></span>
+        Nurkyz
+      </a>
+      <div class="nav-links">
+        <a href="#about" data-i18n="nav.about">About</a>
+        <a href="#work" data-i18n="nav.work">Work</a>
+        <a href="#podcast" data-i18n="nav.podcast">Podcast</a>
+        <a href="#services" data-i18n="nav.services">Services</a>
+      </div>
+      <div class="nav-right">
+        <div class="lang-toggle" role="group" aria-label="Language">
+          <button type="button" class="lang-btn" data-lang="en">EN</button>
+          <button type="button" class="lang-btn" data-lang="ru">RU</button>
+        </div>
+        <a href="#contact" class="nav-cta" data-i18n="nav.contact">Contact</a>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <header id="top" class="hero">
+      <div class="hero-copy">
+        <div class="badge">
+          <span class="badge-dot"></span>
+          <span data-i18n="heroBadge">Available for collabs</span>
+        </div>
+        <p class="hero-pre" data-i18n="heroPre">Hi, I'm</p>
+        <h1 class="hero-name"><span data-i18n="heroName">Nurkyz</span><span class="dot">.</span></h1>
+        <p class="hero-role" data-i18n="heroRole">Lifestyle creator &amp; host of the Kochmon Podcast</p>
+        <p class="hero-desc" data-i18n="heroDesc">I make daily-life content that feels honest, warm and a little chaotic — and I help brands show up in my world without breaking the vibe.</p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn btn-primary" data-i18n="ctaPrimary">Work with me</a>
+          <a href="#podcast" class="btn btn-outline" data-i18n="ctaSecondary">Watch the podcast</a>
+        </div>
+      </div>
+
+      <div class="hero-media">
+        <div class="photo-frame photo-pink">
+          <span class="photo-tag">PHOTO — hero portrait</span>
+        </div>
+        <div class="sticker sticker-a" data-i18n="stickerA">always filming</div>
+        <div class="sticker sticker-b" data-i18n="stickerB">real, not perfect</div>
+        <div class="spinner"><span>✦</span></div>
+      </div>
+    </header>
+
+    <!-- MARQUEE -->
+    <div class="marquee">
+      <div class="marquee-track">
+        <span class="marquee-group" data-marquee></span>
+        <span class="marquee-group" data-marquee aria-hidden="true"></span>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <section id="stats" class="stats" hidden>
+      <div class="stats-grid" data-stats></div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="about">
+      <div class="about-media">
+        <div class="photo-frame photo-purple">
+          <span class="photo-tag">PHOTO — candid / lifestyle</span>
+        </div>
+      </div>
+      <div class="about-copy">
+        <span class="kicker" data-i18n="aboutKicker">About me</span>
+        <h2 class="section-title"><span data-i18n="aboutTitle">Real life, on camera —</span> <span class="accent-serif" data-i18n="aboutTitleAccent">with the volume up.</span></h2>
+        <p class="body-text" data-i18n="aboutP1"></p>
+        <p class="body-text" data-i18n="aboutP2"></p>
+        <div class="tag-row" data-about-tags></div>
+      </div>
+    </section>
+
+    <!-- WORK -->
+    <section id="work" class="work">
+      <div class="work-head">
+        <div>
+          <span class="kicker" data-i18n="workKicker">Selected work</span>
+          <h2 class="section-title work-title" data-i18n="workTitle">Content that actually gets watched</h2>
+        </div>
+        <p class="work-note" data-i18n="workNote"></p>
+      </div>
+      <div class="work-grid" data-work></div>
+    </section>
+
+    <!-- PODCAST -->
+    <section id="podcast" class="podcast">
+      <div class="podcast-inner">
+        <div class="podcast-copy">
+          <span class="kicker kicker-light" data-i18n="podcastKicker">Kochmon Podcast</span>
+          <h2 class="podcast-title" data-i18n="podcastTitle">Honest talks, zero filter</h2>
+          <p class="podcast-desc" data-i18n="podcastDesc"></p>
+          <a href="https://www.youtube.com/@Kochmon_podcast1" target="_blank" rel="noopener" class="podcast-cta">
+            <span class="play-dot">▶</span>
+            <span data-i18n="podcastCta">Watch on YouTube</span>
+          </a>
+        </div>
+        <div class="episodes" data-episodes></div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services" class="services" hidden>
+      <div class="services-head">
+        <span class="kicker" data-i18n="servicesKicker">Work with me</span>
+        <h2 class="section-title" data-i18n="servicesTitle">Packages &amp; rates</h2>
+      </div>
+      <div class="services-grid" data-services></div>
+      <p class="services-foot" data-i18n="servicesFoot"></p>
+    </section>
+
+    <!-- BRANDS -->
+    <section class="brands">
+      <div class="brands-inner">
+        <p class="brands-kicker" data-i18n="brandsKicker">Brands &amp; partners</p>
+        <div class="brands-grid" data-brands></div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="testimonials">
+      <div class="testimonials-head">
+        <span class="kicker" data-i18n="testKicker">Kind words</span>
+        <h2 class="section-title" data-i18n="testTitle">What partners say</h2>
+      </div>
+      <div class="testimonials-grid" data-testimonials></div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="contact">
+      <div class="contact-inner">
+        <div class="contact-copy">
+          <span class="kicker kicker-dark" data-i18n="contactKicker">Let's talk</span>
+          <h2 class="contact-title" data-i18n="contactTitle">Got a brand, a brief, or just a vibe?</h2>
+          <p class="contact-desc" data-i18n="contactDesc"></p>
+          <a href="mailto:hello@nurkyz.com" class="contact-email">hello@nurkyz.com</a>
+        </div>
+
+        <div class="contact-form-wrap" data-form-wrap>
+          <!-- form / success state injected here -->
+        </div>
+      </div>
+
+      <!-- FOOTER / LINK HUB -->
+      <footer class="footer">
+        <div class="footer-top">
+          <div class="footer-brand">
+            <span class="brand-dot"></span>Nurkyz
+          </div>
+          <div class="footer-socials" data-socials></div>
+        </div>
+        <div class="footer-rights">© <span data-year></span> Nurkyz · <span data-i18n="footRights">All rights reserved.</span></div>
+      </footer>
+    </section>
+
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

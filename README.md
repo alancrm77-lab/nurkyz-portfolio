@@ -1,25 +1,55 @@
-# CODING AGENTS: READ THIS FIRST
+# Nurkyz — Portfolio
 
-This is a **handoff bundle** from Claude Design (claude.ai/design).
+A vibrant, bilingual (EN/RU) one-page portfolio for **Nurkyz**, lifestyle creator and host of the *Kochmon Podcast*. Built as a zero-build static site.
 
-A user mocked up designs in HTML/CSS/JS using an AI design tool, then exported this bundle so a coding agent can implement the designs for real.
+## Tech
 
-## What you should do — IMPORTANT
+Plain HTML, CSS and vanilla JS — no framework, no build step.
 
-**Read the chat transcripts first.** There are 1 chat transcript(s) in `chats/`. The transcripts show the full back-and-forth between the user and the design assistant — they tell you **what the user actually wants** and **where they landed** after iterating. Don't skip them. The final HTML files are the output, but the chat is where the intent lives.
+| File | Purpose |
+| --- | --- |
+| `index.html` | Page structure |
+| `styles.css` | All styling, animations, responsive rules |
+| `app.js` | Bilingual content, rendering, language toggle, contact form |
 
-**Read `project/Nurkyz Portfolio.dc.html` in full.** The user had this file open when they triggered the handoff, so it's almost certainly the primary design they want built. Read it top to bottom — don't skim. Then **follow its imports**: open every file it pulls in (shared components, CSS, scripts) so you understand how the pieces fit together before you start implementing.
+## Run locally
 
-**If anything is ambiguous, ask the user to confirm before you start implementing.** It's much cheaper to clarify scope up front than to build the wrong thing.
+Just open `index.html` in a browser, or serve the folder:
 
-## About the design files
+```bash
+python3 -m http.server 8000
+# then visit http://localhost:8000
+```
 
-The design medium is **HTML/CSS/JS** — these are prototypes, not production code. Your job is to **recreate them pixel-perfectly** in whatever technology makes sense for the target codebase (React, Vue, native, whatever fits). Match the visual output; don't copy the prototype's internal structure unless it happens to fit.
+## Configuration
 
-**Don't render these files in a browser or take screenshots unless the user asks you to.** Everything you need — dimensions, colors, layout rules — is spelled out in the source. Read the HTML and CSS directly; a screenshot won't tell you anything they don't.
+Settings live at the top of `app.js`:
 
-## Bundle contents
+```js
+const CONFIG = {
+  defaultLanguage: 'en', // 'en' | 'ru'
+  showStats: true,       // toggle the stats section
+  showRates: true,       // toggle the services / rates section
+  year: 2026,
+  web3formsKey: '...',   // Web3Forms access key for the contact form
+};
+```
 
-- `README.md` — this file
-- `chats/` — conversation transcripts (read these!)
-- `project/` — the `UGC Creator Portfolio Design` project files (HTML prototypes, assets, components)
+### Contact form (Web3Forms)
+
+The contact form submits to [Web3Forms](https://web3forms.com) from the visitor's
+browser — no server needed. Set your access key in `CONFIG.web3formsKey`.
+Submissions are emailed to the address tied to that key.
+
+## Customising content
+
+- **Copy & translations** — edit the `D.en` / `D.ru` dictionaries in `app.js`.
+- **Photos** — replace the striped placeholder blocks (`.photo-frame`, `.work-thumb`)
+  with real images.
+- **Stats** — update the `STATS` object (currently placeholder numbers).
+- **Links** — Instagram / YouTube / email live in the `SOCIALS` array.
+
+## Deployment (Cloudflare Pages)
+
+Connected to Cloudflare Pages — no build command, output directory is the repo root.
+Every push to `main` triggers an automatic deploy.
