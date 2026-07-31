@@ -37,6 +37,7 @@ const D = {
     aboutP1: "I'm Nurkyz, a lifestyle creator documenting the messy, funny, beautiful parts of everyday life. My audience sticks around because it feels like texting a friend, not watching an ad.",
     aboutP2: "Off-camera I host the Kochmon Podcast, where the conversations get honest fast. Whether it's a 15-second reel or a full episode, I build trust — and that's what makes brand partnerships actually convert.",
     aboutTags: ['Lifestyle', 'UGC', 'Podcasting', 'Storytelling', 'Reels & Shorts', 'Daily vlogs'],
+    aboutPhotoAlt: 'Nurkyz in a traditional Kyrgyz headdress wearing Kochmon Podcast sunglasses',
     workKicker: 'Selected work',
     workTitle: 'Content that actually gets watched',
     workNote: 'A snapshot of recent reels, collabs and series. Tap any to start a conversation.',
@@ -101,6 +102,7 @@ const D = {
     aboutP1: 'Я Нуркыз, лайфстайл-криэйтор. Снимаю смешные, тёплые и неидеальные моменты обычной жизни. Аудитория остаётся со мной, потому что это похоже на переписку с подругой, а не на рекламу.',
     aboutP2: 'Вне кадра я веду подкаст Kochmon — здесь разговоры быстро становятся честными. Будь то 15-секундный рилс или целый выпуск, я строю доверие. Именно поэтому коллаборации с брендами работают.',
     aboutTags: ['Лайфстайл', 'UGC', 'Подкаст', 'Сторителлинг', 'Reels & Shorts', 'Влоги'],
+    aboutPhotoAlt: 'Нуркыз в традиционном кыргызском головном уборе и очках Kochmon Podcast',
     workKicker: 'Избранные работы',
     workTitle: 'Контент, который реально смотрят',
     workNote: 'Подборка свежих рилсов, коллабораций и рубрик. Нажмите на любой, чтобы начать разговор.',
@@ -251,6 +253,10 @@ function renderText(c) {
   $$('[data-i18n]').forEach((node) => {
     const val = lookup(c, node.dataset.i18n);
     if (typeof val === 'string') node.textContent = val;
+  });
+  $$('[data-i18n-alt]').forEach((node) => {
+    const val = lookup(c, node.dataset.i18nAlt);
+    if (typeof val === 'string') node.alt = val;
   });
 }
 
