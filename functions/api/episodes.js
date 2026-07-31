@@ -13,6 +13,9 @@
  */
 
 const DEFAULT_HANDLE = 'Kochmon_podcast1';
+// Kochmon Podcast. Hardcoded so we never depend on scraping the channel page,
+// which YouTube may answer with a consent wall or bot check.
+const DEFAULT_CHANNEL_ID = 'UC8JyIR56W9pxa-9riSs4OXg';
 const CACHE_SECONDS = 3600; // 1 hour
 const MAX_EPISODES = 12;
 const UA =
@@ -74,6 +77,12 @@ async function resolveChannelId(env, trace = []) {
   if (env && env.YT_CHANNEL_ID) {
     trace.push('channel id from YT_CHANNEL_ID env var');
     return env.YT_CHANNEL_ID;
+  }
+  // Only fall through to scraping if the handle was overridden, since the
+  // hardcoded id belongs to the default handle.
+  if (DEFAULT_CHANNEL_ID && !(env && env.YT_HANDLE)) {
+    trace.push('channel id from built-in default');
+    return DEFAULT_CHANNEL_ID;
   }
 
   const handle = (env && env.YT_HANDLE) || DEFAULT_HANDLE;
