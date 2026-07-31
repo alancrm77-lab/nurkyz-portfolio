@@ -1,0 +1,47 @@
+name: Update podcast episodes
+
+# Refreshes episodes.json from the YouTube channel so new uploads appear on the
+# site automatically. Committing the file triggers a Cloudflare redeploy.
+
+on:
+  schedule:
+    # Every 3 hours. Cron uses UTC.
+    - cron: '0 */3 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/fetch-episodes.mjs'
+      - '.github/workflows/update-episodes.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-episodes
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch latest episodes
+        run: node scripts/fetch-episodes.mjs
+
+      - name: Commit if the feed changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ -n "$(git status --porcelain episodes.json)" ]; then
+            git add episodes.json
+            git commit -m "Update podcast episodes from YouTube"
+            git push
+          else
+            echo "No change to episodes.json"
+          fi
