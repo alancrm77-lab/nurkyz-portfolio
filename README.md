@@ -55,23 +55,27 @@ The podcast section pulls the newest videos from the
 [Kochmon Podcast](https://www.youtube.com/@Kochmon_podcast1) YouTube channel —
 new uploads appear on the site automatically, no edits needed.
 
-`functions/api/episodes.js` is a Cloudflare Pages Function serving `/api/episodes`.
-It reads YouTube's public RSS feed (no API key, no quota), caches the result at the
-edge for an hour, and returns JSON. The browser can't fetch that feed directly
-because YouTube sends no CORS headers, which is why it goes through the Function.
+The browser can't read YouTube's feed directly — it sends no CORS headers — so the
+fetch happens in CI instead:
 
-If the endpoint is unavailable — running locally, or YouTube hiccuping — the site
-falls back to the episodes listed in `D.<lang>.episodes` in `app.js`, so the
+1. `.github/workflows/update-episodes.yml` runs every 3 hours.
+2. `scripts/fetch-episodes.mjs` reads the channel's public RSS feed
+   (no API key, no quota) and writes `episodes.json`.
+3. If the file changed, the workflow commits it, which triggers a redeploy.
+4. `app.js` loads `episodes.json` at runtime and renders the cards.
+
+If `episodes.json` is missing — opening the page from the filesystem, say — the
+site falls back to the episodes listed in `D.<lang>.episodes` in `app.js`, so the
 section is never empty.
 
-Optional environment variables (Pages → Settings → Environment variables):
+Run it by hand with `node scripts/fetch-episodes.mjs`, or from the repo's
+**Actions → Update podcast episodes → Run workflow**. `YT_CHANNEL_ID` overrides the
+channel; `COUNT` sets how many entries are written. `CONFIG.episodeCount` in
+`app.js` controls how many of them are shown, and `CONFIG.liveEpisodes = false`
+disables the feature.
 
-| Variable | Purpose |
-| --- | --- |
-| `YT_CHANNEL_ID` | `UC…` channel id. Set it to skip resolving the handle (slightly faster, more robust). |
-| `YT_HANDLE` | Channel handle without the `@`. Defaults to `Kochmon_podcast1`. |
-
-Set `CONFIG.liveEpisodes = false` in `app.js` to disable the live feed entirely.
+> The workflow needs **Settings → Actions → General → Workflow permissions** set to
+> **Read and write**, otherwise it can't commit the refreshed file.
 
 ## Deployment (Cloudflare Pages)
 

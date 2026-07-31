@@ -10,10 +10,11 @@ const CONFIG = {
   year: 2026,
   // Web3Forms access key — get a free one at https://web3forms.com (tied to your email).
   web3formsKey: '9d4a7569-8775-4c9f-b242-d8925fbd6401',
-  // Pull the latest episodes live from YouTube via /api/episodes (Cloudflare Pages
-  // Function). Falls back to the episodes listed in D.<lang>.episodes if it fails.
+  // Latest episodes, refreshed from YouTube by .github/workflows/update-episodes.yml.
+  // Falls back to the episodes listed in D.<lang>.episodes if the file is missing.
   liveEpisodes: true,
-  episodesEndpoint: '/api/episodes?limit=3',
+  episodesEndpoint: 'episodes.json',
+  episodeCount: 3,
 };
 
 /* ---- Bilingual copy ---- */
@@ -392,7 +393,7 @@ async function loadLiveEpisodes() {
     if (!res.ok) return;
     const data = await res.json();
     if (Array.isArray(data.episodes) && data.episodes.length) {
-      state.liveEpisodes = data.episodes;
+      state.liveEpisodes = data.episodes.slice(0, CONFIG.episodeCount);
       renderEpisodes(D[state.lang]);
     }
   } catch (err) {
