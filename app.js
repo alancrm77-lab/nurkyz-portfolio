@@ -174,13 +174,13 @@ const STATS = {
     { num: '73K+', label: 'Subscribers', color: '#FF4D8D' },
     { num: '3M+', label: 'Monthly views', color: '#9B6BFF' },
     { num: '500+', label: 'Brand collaborations', color: '#FF7A59' },
-    { num: '250K', label: 'Podcast listens', color: '#2FB6FF' },
+    { num: '172K+', label: 'Podcast listens', color: '#2FB6FF' },
   ],
   ru: [
     { num: '73K+', label: 'Подписчиков', color: '#FF4D8D' },
     { num: '3M+', label: 'Просмотров в месяц', color: '#9B6BFF' },
     { num: '500+', label: 'Коллабораций с брендами', color: '#FF7A59' },
-    { num: '250K', label: 'Прослушиваний подкаста', color: '#2FB6FF' },
+    { num: '172K+', label: 'Прослушиваний подкаста', color: '#2FB6FF' },
   ],
 };
 
