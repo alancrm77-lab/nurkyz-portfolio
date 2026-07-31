@@ -49,6 +49,30 @@ Submissions are emailed to the address tied to that key.
 - **Stats** — update the `STATS` object (currently placeholder numbers).
 - **Links** — Instagram / YouTube / email live in the `SOCIALS` array.
 
+### Live podcast episodes
+
+The podcast section pulls the newest videos from the
+[Kochmon Podcast](https://www.youtube.com/@Kochmon_podcast1) YouTube channel —
+new uploads appear on the site automatically, no edits needed.
+
+`functions/api/episodes.js` is a Cloudflare Pages Function serving `/api/episodes`.
+It reads YouTube's public RSS feed (no API key, no quota), caches the result at the
+edge for an hour, and returns JSON. The browser can't fetch that feed directly
+because YouTube sends no CORS headers, which is why it goes through the Function.
+
+If the endpoint is unavailable — running locally, or YouTube hiccuping — the site
+falls back to the episodes listed in `D.<lang>.episodes` in `app.js`, so the
+section is never empty.
+
+Optional environment variables (Pages → Settings → Environment variables):
+
+| Variable | Purpose |
+| --- | --- |
+| `YT_CHANNEL_ID` | `UC…` channel id. Set it to skip resolving the handle (slightly faster, more robust). |
+| `YT_HANDLE` | Channel handle without the `@`. Defaults to `Kochmon_podcast1`. |
+
+Set `CONFIG.liveEpisodes = false` in `app.js` to disable the live feed entirely.
+
 ## Deployment (Cloudflare Pages)
 
 Connected to Cloudflare Pages — no build command, output directory is the repo root.

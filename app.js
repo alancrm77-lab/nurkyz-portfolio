@@ -10,6 +10,10 @@ const CONFIG = {
   year: 2026,
   // Web3Forms access key — get a free one at https://web3forms.com (tied to your email).
   web3formsKey: '9d4a7569-8775-4c9f-b242-d8925fbd6401',
+  // Pull the latest episodes live from YouTube via /api/episodes (Cloudflare Pages
+  // Function). Falls back to the episodes listed in D.<lang>.episodes if it fails.
+  liveEpisodes: true,
+  episodesEndpoint: '/api/episodes?limit=3',
 };
 
 /* ---- Bilingual copy ---- */
@@ -39,6 +43,8 @@ const D = {
     podcastTitle: 'Honest talks, zero filter',
     podcastDesc: 'New episodes every week — candid conversations on life, relationships and the things nobody says out loud. Streaming on YouTube and everywhere you listen.',
     podcastCta: 'Watch on YouTube',
+    epLatest: 'Latest',
+    epViews: 'views',
     episodes: [
       { num: '12', title: 'Burnout, boundaries & saying no', meta: 'Latest · 48 min' },
       { num: '11', title: 'Dating in your twenties', meta: '52 min' },
@@ -101,6 +107,8 @@ const D = {
     podcastTitle: 'Честные разговоры без фильтров',
     podcastDesc: 'Новые выпуски каждую неделю — откровенно о жизни, отношениях и о том, о чём обычно молчат. Смотрите на YouTube и слушайте на всех площадках.',
     podcastCta: 'Смотреть на YouTube',
+    epLatest: 'Новый',
+    epViews: 'просм.',
     episodes: [
       { num: '12', title: 'Выгорание, границы и умение говорить «нет»', meta: 'Новый · 48 мин' },
       { num: '11', title: 'Отношения в двадцать с чем-то', meta: '52 мин' },
@@ -210,6 +218,7 @@ const SOCIALS = [
 const state = {
   lang: D[CONFIG.defaultLanguage] ? CONFIG.defaultLanguage : 'en',
   sent: false,
+  liveEpisodes: null, // populated from YouTube when /api/episodes responds
 };
 
 /* ---- Helpers ---- */
@@ -293,21 +302,103 @@ function renderWork(lang) {
   });
 }
 
+/** "3 days ago" / "3 дня назад" from an ISO date, using the visitor's language. */
+function relativeTime(iso, lang) {
+  const then = new Date(iso).getTime();
+  if (!Number.isFinite(then)) return '';
+  const seconds = Math.round((then - Date.now()) / 1000);
+  const units = [
+    ['year', 31536000], ['month', 2592000], ['week', 604800],
+    ['day', 86400], ['hour', 3600], ['minute', 60],
+  ];
+  const rtf = new Intl.RelativeTimeFormat(lang, { numeric: 'auto' });
+  for (const [unit, secondsPerUnit] of units) {
+    if (Math.abs(seconds) >= secondsPerUnit) {
+      return rtf.format(Math.round(seconds / secondsPerUnit), unit);
+    }
+  }
+  return rtf.format(0, 'minute');
+}
+
+function formatViews(views, c, lang) {
+  if (!views) return '';
+  const n = new Intl.NumberFormat(lang, { notation: 'compact', maximumFractionDigits: 1 }).format(views);
+  return `${n} ${c.epViews}`;
+}
+
+/** Map a live YouTube entry onto the card shape the design expects. */
+function liveEpisodeToCard(ep, index, c, lang) {
+  const parts = [];
+  if (index === 0) parts.push(c.epLatest);
+  const when = relativeTime(ep.published, lang);
+  if (when) parts.push(when);
+  const views = formatViews(ep.views, c, lang);
+  if (views) parts.push(views);
+
+  return {
+    num: ep.episodeNumber,
+    thumbnail: ep.episodeNumber ? null : ep.thumbnail,
+    title: ep.title,
+    meta: parts.join(' · '),
+    url: ep.url,
+  };
+}
+
 function renderEpisodes(c) {
   const wrap = $('[data-episodes]');
+  const lang = state.lang;
+  const live = state.liveEpisodes;
+  const items = live && live.length
+    ? live.map((ep, i) => liveEpisodeToCard(ep, i, c, lang))
+    : c.episodes;
+
   wrap.replaceChildren();
-  c.episodes.forEach((ep) => {
-    wrap.append(
-      el('div', { class: 'episode' },
-        el('div', { class: 'episode-num' }, ep.num),
-        el('div', { class: 'episode-info' },
-          el('div', { class: 'episode-title' }, ep.title),
-          el('div', { class: 'episode-meta' }, ep.meta),
-        ),
-        el('span', { class: 'episode-play' }, '▶'),
+  items.forEach((ep) => {
+    // The number badge doubles as a thumbnail when the title carries no episode number.
+    const badge = ep.thumbnail
+      ? el('div', {
+          class: 'episode-num episode-thumb',
+          style: `background-image:url("${ep.thumbnail}")`,
+          role: 'presentation',
+        })
+      : el('div', { class: 'episode-num' }, ep.num);
+
+    const body = [
+      badge,
+      el('div', { class: 'episode-info' },
+        el('div', { class: 'episode-title' }, ep.title),
+        el('div', { class: 'episode-meta' }, ep.meta),
       ),
+      el('span', { class: 'episode-play' }, '▶'),
+    ];
+
+    // Live episodes link straight to the video; the fallback list stays static.
+    wrap.append(
+      ep.url
+        ? el('a', { class: 'episode', href: ep.url, target: '_blank', rel: 'noopener' }, ...body)
+        : el('div', { class: 'episode' }, ...body),
     );
   });
+}
+
+/** Fetch the newest episodes from YouTube, then re-render if anything came back. */
+async function loadLiveEpisodes() {
+  if (!CONFIG.liveEpisodes) return;
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+    const res = await fetch(CONFIG.episodesEndpoint, { signal: controller.signal });
+    clearTimeout(timeout);
+    if (!res.ok) return;
+    const data = await res.json();
+    if (Array.isArray(data.episodes) && data.episodes.length) {
+      state.liveEpisodes = data.episodes;
+      renderEpisodes(D[state.lang]);
+    }
+  } catch (err) {
+    // Offline, endpoint missing (e.g. opened as a local file), or YouTube hiccuped —
+    // the statically-listed episodes stay on screen.
+  }
 }
 
 function renderServices(c) {
@@ -486,3 +577,4 @@ $$('.lang-btn').forEach((btn) => {
 });
 
 render();
+loadLiveEpisodes();
