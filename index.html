@@ -53,6 +53,10 @@
 
       <div class="hero-media">
         <div class="photo-frame photo-pink">
+          <!-- Falls back to the striped placeholder if the file is missing. -->
+          <img class="photo-img" src="assets/hero.jpg" data-i18n-alt="heroPhotoAlt"
+               alt="Nurkyz seated in a black blazer and white dress"
+               fetchpriority="high" onerror="this.remove()">
           <span class="photo-tag">PHOTO — hero portrait</span>
         </div>
         <div class="sticker sticker-a" data-i18n="stickerA">always filming</div>
@@ -81,7 +85,7 @@
           <!-- Falls back to the striped placeholder if the file is missing. -->
           <img class="photo-img" src="assets/about.jpg" data-i18n-alt="aboutPhotoAlt"
                alt="Nurkyz wearing a traditional Kyrgyz headdress and Kochmon Podcast sunglasses"
-               onerror="this.remove()">
+               loading="lazy" onerror="this.remove()">
           <span class="photo-tag">PHOTO — candid / lifestyle</span>
         </div>
       </div>
