@@ -80,7 +80,7 @@ const D = {
     fMsg: 'Tell me about it', fMsgPh: 'Campaign, timeline, budget range…',
     fSubmit: 'Send enquiry',
     fSending: 'Sending…',
-    fError: 'Something went wrong. Please email me directly at hello@nurkyz.com.',
+    fError: 'Something went wrong. Please email me directly at nurkyz.creates@gmail.com.',
     sentTitle: 'Got it — thank you!',
     sentDesc: "I'll get back to you within 48 hours.",
     footRights: 'All rights reserved.',
@@ -146,7 +146,7 @@ const D = {
     fMsg: 'Расскажите подробнее', fMsgPh: 'Кампания, сроки, бюджет…',
     fSubmit: 'Отправить запрос',
     fSending: 'Отправка…',
-    fError: 'Что-то пошло не так. Напишите мне напрямую на hello@nurkyz.com.',
+    fError: 'Что-то пошло не так. Напишите мне напрямую на nurkyz.creates@gmail.com.',
     sentTitle: 'Получено — спасибо!',
     sentDesc: 'Я отвечу вам в течение 48 часов.',
     footRights: 'Все права защищены.',
@@ -216,7 +216,7 @@ const SOCIALS = [
   { name: 'Instagram', handle: '@nurkyzkou_', url: 'https://www.instagram.com/nurkyzkou_/' },
   { name: 'Instagram', handle: '@kochmon_podcast', url: 'https://www.instagram.com/kochmon_podcast/' },
   { name: 'YouTube', handle: 'Kochmon Podcast', url: 'https://www.youtube.com/@Kochmon_podcast1' },
-  { name: 'Email', handle: 'hello@nurkyz.com', url: 'mailto:hello@nurkyz.com' },
+  { name: 'Email', handle: 'nurkyz.creates@gmail.com', url: 'mailto:nurkyz.creates@gmail.com' },
 ];
 
 /* ---- App state ---- */
@@ -500,7 +500,7 @@ function renderForm(c) {
   form.append(
     // Web3Forms config fields
     el('input', { type: 'hidden', name: 'access_key', value: CONFIG.web3formsKey }),
-    el('input', { type: 'hidden', name: 'subject', value: 'New enquiry from nurkyz.com' }),
+    el('input', { type: 'hidden', name: 'subject', value: 'New enquiry from your portfolio site' }),
     el('input', { type: 'hidden', name: 'from_name', value: 'Nurkyz Portfolio' }),
     // Honeypot — bots fill this, humans don't
     el('input', { type: 'checkbox', name: 'botcheck', class: 'hp', tabindex: '-1', autocomplete: 'off' }),
@@ -521,10 +521,15 @@ function renderForm(c) {
     submitBtn.disabled = true;
     submitBtn.textContent = c.fSending;
     try {
+      const payload = new FormData(form);
+      // Replying to the notification email goes straight back to the sender.
+      const from = payload.get('email');
+      if (from) payload.set('replyto', from);
+
       const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { Accept: 'application/json' },
-        body: new FormData(form),
+        body: payload,
       });
       const data = await res.json().catch(() => ({}));
       if (res.ok && data.success) {
