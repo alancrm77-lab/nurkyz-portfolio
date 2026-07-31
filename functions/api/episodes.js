@@ -22,23 +22,33 @@ export async function onRequestGet(context) {
   const { request, env, waitUntil } = context;
   const url = new URL(request.url);
   const limit = Math.min(parseInt(url.searchParams.get('limit') || '3', 10) || 3, MAX_EPISODES);
+  const debug = url.searchParams.get('debug') === '1';
 
-  // Serve from the edge cache when we can.
+  // ?debug=1 reports how far the lookup got. Reaching this at all proves the
+  // Pages Function is deployed and routing correctly.
+  const trace = [];
+
+  // Serve from the edge cache when we can (never for debug requests).
   const cache = caches.default;
   const cacheKey = new Request(`${url.origin}${url.pathname}?limit=${limit}`, { method: 'GET' });
-  const cached = await cache.match(cacheKey);
-  if (cached) return cached;
+  if (!debug) {
+    const cached = await cache.match(cacheKey);
+    if (cached) return cached;
+  }
 
   try {
-    const channelId = await resolveChannelId(env);
-    const episodes = (await fetchFeed(channelId)).slice(0, limit);
+    const channelId = await resolveChannelId(env, trace);
+    const episodes = (await fetchFeed(channelId, trace)).slice(0, limit);
+
+    if (debug) return json({ ok: true, channelId, count: episodes.length, trace, episodes }, 200, 0);
 
     const response = json({ channelId, episodes }, 200, CACHE_SECONDS);
     waitUntil(cache.put(cacheKey, response.clone()));
     return response;
   } catch (err) {
+    const message = String(err && err.message ? err.message : err);
     // Don't cache failures for long — the site falls back to its built-in list.
-    return json({ error: String(err && err.message ? err.message : err), episodes: [] }, 502, 60);
+    return json({ ok: false, error: message, trace, episodes: [] }, debug ? 200 : 502, debug ? 0 : 60);
   }
 }
 
@@ -53,37 +63,86 @@ function json(body, status, maxAge) {
   });
 }
 
-/** Resolve the UC… channel id, either from config or from the channel page. */
-async function resolveChannelId(env) {
-  if (env && env.YT_CHANNEL_ID) return env.YT_CHANNEL_ID;
+/**
+ * Resolve the UC… channel id, either from config or by scraping the channel page.
+ *
+ * YouTube can answer datacenter IPs with a consent interstitial or a bot check,
+ * so we send consent cookies, force English, and try a few entry points before
+ * giving up. Setting YT_CHANNEL_ID skips all of this.
+ */
+async function resolveChannelId(env, trace = []) {
+  if (env && env.YT_CHANNEL_ID) {
+    trace.push('channel id from YT_CHANNEL_ID env var');
+    return env.YT_CHANNEL_ID;
+  }
 
   const handle = (env && env.YT_HANDLE) || DEFAULT_HANDLE;
-  const res = await fetch(`https://www.youtube.com/@${handle}`, {
-    headers: { 'user-agent': UA, 'accept-language': 'en' },
-    cf: { cacheTtl: CACHE_SECONDS, cacheEverything: true },
-  });
-  if (!res.ok) throw new Error(`channel page returned ${res.status}`);
+  const candidates = [
+    `https://www.youtube.com/@${handle}`,
+    `https://www.youtube.com/@${handle}/videos`,
+    `https://m.youtube.com/@${handle}`,
+  ];
 
-  const html = await res.text();
-  const match =
-    html.match(/"channelId":"(UC[0-9A-Za-z_-]{22})"/) ||
-    html.match(/youtube\.com\/channel\/(UC[0-9A-Za-z_-]{22})/) ||
-    html.match(/"externalId":"(UC[0-9A-Za-z_-]{22})"/);
-  if (!match) throw new Error('could not resolve channel id from handle');
-  return match[1];
+  for (const target of candidates) {
+    try {
+      const res = await fetch(`${target}?hl=en&persist_hl=1`, {
+        headers: {
+          'user-agent': UA,
+          'accept-language': 'en-US,en;q=0.9',
+          // Skips the EU consent interstitial that otherwise hides the page markup.
+          cookie: 'CONSENT=YES+cb; SOCS=CAI',
+        },
+        cf: { cacheTtl: CACHE_SECONDS, cacheEverything: true },
+      });
+      const html = res.ok ? await res.text() : '';
+      trace.push(`GET ${target} → ${res.status}${res.ok ? ` (${html.length} bytes)` : ''}`);
+      if (!res.ok) continue;
+
+      const id = extractChannelId(html);
+      if (id) {
+        trace.push(`resolved channel id ${id}`);
+        return id;
+      }
+      trace.push('no channel id in markup (consent wall or bot check?)');
+    } catch (err) {
+      trace.push(`GET ${target} threw ${err && err.message}`);
+    }
+  }
+
+  throw new Error(
+    'could not resolve channel id from handle — set the YT_CHANNEL_ID environment variable in Cloudflare Pages',
+  );
+}
+
+function extractChannelId(html) {
+  const patterns = [
+    /"channelId":"(UC[0-9A-Za-z_-]{22})"/,
+    /"externalId":"(UC[0-9A-Za-z_-]{22})"/,
+    /youtube\.com\/channel\/(UC[0-9A-Za-z_-]{22})/,
+    /<meta[^>]+itemprop="channelId"[^>]+content="(UC[0-9A-Za-z_-]{22})"/,
+  ];
+  for (const re of patterns) {
+    const m = html.match(re);
+    if (m) return m[1];
+  }
+  return null;
 }
 
 /** Fetch and parse the channel's Atom feed. */
-async function fetchFeed(channelId) {
-  const res = await fetch(
-    `https://www.youtube.com/feeds/videos.xml?channel_id=${encodeURIComponent(channelId)}`,
-    {
-      headers: { 'user-agent': UA },
-      cf: { cacheTtl: CACHE_SECONDS, cacheEverything: true },
-    },
-  );
-  if (!res.ok) throw new Error(`feed returned ${res.status}`);
-  return parseFeed(await res.text());
+async function fetchFeed(channelId, trace = []) {
+  const feedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${encodeURIComponent(channelId)}`;
+  const res = await fetch(feedUrl, {
+    headers: { 'user-agent': UA, 'accept-language': 'en-US,en;q=0.9' },
+    cf: { cacheTtl: CACHE_SECONDS, cacheEverything: true },
+  });
+  trace.push(`GET feed → ${res.status}`);
+  if (!res.ok) throw new Error(`feed returned ${res.status} for channel ${channelId}`);
+
+  const xml = await res.text();
+  const episodes = parseFeed(xml);
+  trace.push(`parsed ${episodes.length} entries from ${xml.length} bytes`);
+  if (!episodes.length) throw new Error('feed contained no entries');
+  return episodes;
 }
 
 /**
