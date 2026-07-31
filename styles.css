@@ -469,9 +469,19 @@ a { text-decoration: none; color: inherit; }
   justify-content: center;
   font-family: 'Bricolage Grotesque', sans-serif;
   font-weight: 700;
-  font-size: 17px;
+  font-size: 15px;
   color: #B79AA6;
   letter-spacing: 0.02em;
+  text-align: center;
+  padding: 8px 10px;
+  line-height: 1.2;
+}
+.brands-more {
+  text-align: center;
+  margin-top: 18px;
+  color: #B79AA6;
+  font-weight: 600;
+  font-size: 14px;
 }
 
 /* ===== Testimonials ===== */

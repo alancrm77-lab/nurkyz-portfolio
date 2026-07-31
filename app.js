@@ -47,13 +47,14 @@ const D = {
     servicesKicker: 'Work with me',
     servicesTitle: 'Packages & rates',
     services: [
-      { name: 'UGC Starter', price: 'from $350', desc: 'Native, scroll-stopping content for your channels.', features: ['1 vertical video (15–30s)', '2 rounds of revisions', 'Raw + edited files', 'Usage rights included'], bg: '#fff', fg: '#2A1822', btnBg: '#FF4D8D', btnFg: '#fff' },
-      { name: 'Creator Collab', price: 'from $900', desc: 'A full reel posted to my audience, made together.', features: ['1 reel on my profile', 'Story set (3 frames)', 'Concept + scripting', 'Performance recap'], bg: '#FF4D8D', fg: '#fff', btnBg: '#fff', btnFg: '#2A1822' },
+      { name: 'UGC Starter', price: 'from $200', desc: 'Native, scroll-stopping content for your channels.', features: ['1 vertical video (15–30s)', '2 rounds of revisions', 'Raw + edited files', 'Usage rights included'], bg: '#fff', fg: '#2A1822', btnBg: '#FF4D8D', btnFg: '#fff' },
+      { name: 'Creator Collab', price: 'from $800', desc: 'A full reel posted to my audience, made together.', features: ['1 reel on my profile', 'Story set (3 frames)', 'Concept + scripting', 'Performance recap'], bg: '#FF4D8D', fg: '#fff', btnBg: '#fff', btnFg: '#2A1822' },
       { name: 'Podcast Feature', price: "let's talk", desc: 'Integrate your brand into the Kochmon Podcast.', features: ['Host-read segment', 'Episode + clips', 'Cross-posted on socials', 'Long-term partnerships'], bg: '#fff', fg: '#2A1822', btnBg: '#FF4D8D', btnFg: '#fff' },
     ],
     servicesBtn: 'Get started',
     servicesFoot: 'Rates are starting points — every brief is custom. Tell me your goals and I’ll send a tailored proposal.',
     brandsKicker: 'Brands & partners',
+    brandsMore: '…and more',
     testKicker: 'Kind words',
     testTitle: 'What partners say',
     testimonials: [
@@ -108,13 +109,14 @@ const D = {
     servicesKicker: 'Сотрудничество',
     servicesTitle: 'Форматы и цены',
     services: [
-      { name: 'UGC Старт', price: 'от $350', desc: 'Нативный контент, который останавливает скролл, для ваших каналов.', features: ['1 вертикальное видео (15–30с)', '2 раунда правок', 'Сырые + смонтированные файлы', 'Права на использование'], bg: '#fff', fg: '#2A1822', btnBg: '#FF4D8D', btnFg: '#fff' },
-      { name: 'Коллаборация', price: 'от $900', desc: 'Полноценный рилс на моей аудитории — делаем вместе.', features: ['1 рилс на моём профиле', 'Сторис (3 кадра)', 'Идея + сценарий', 'Отчёт по охватам'], bg: '#FF4D8D', fg: '#fff', btnBg: '#fff', btnFg: '#2A1822' },
+      { name: 'UGC Старт', price: 'от $200', desc: 'Нативный контент, который останавливает скролл, для ваших каналов.', features: ['1 вертикальное видео (15–30с)', '2 раунда правок', 'Сырые + смонтированные файлы', 'Права на использование'], bg: '#fff', fg: '#2A1822', btnBg: '#FF4D8D', btnFg: '#fff' },
+      { name: 'Коллаборация', price: 'от $800', desc: 'Полноценный рилс на моей аудитории — делаем вместе.', features: ['1 рилс на моём профиле', 'Сторис (3 кадра)', 'Идея + сценарий', 'Отчёт по охватам'], bg: '#FF4D8D', fg: '#fff', btnBg: '#fff', btnFg: '#2A1822' },
       { name: 'Интеграция в подкаст', price: 'обсудим', desc: 'Интеграция вашего бренда в подкаст Kochmon.', features: ['Нативное упоминание', 'Выпуск + нарезки', 'Кросс-постинг в соцсетях', 'Долгосрочные партнёрства'], bg: '#fff', fg: '#2A1822', btnBg: '#FF4D8D', btnFg: '#fff' },
     ],
     servicesBtn: 'Начать',
     servicesFoot: 'Цены — это отправная точка, каждый бриф индивидуален. Расскажите о целях, и я пришлю персональное предложение.',
     brandsKicker: 'Бренды и партнёры',
+    brandsMore: '…и другие',
     testKicker: 'Отзывы',
     testTitle: 'Что говорят партнёры',
     testimonials: [
@@ -169,20 +171,33 @@ const WORK = {
 
 const STATS = {
   en: [
-    { num: '120K+', label: 'Followers across platforms', color: '#FF4D8D' },
-    { num: '8M+', label: 'Monthly views', color: '#9B6BFF' },
-    { num: '40+', label: 'Brand collaborations', color: '#FF7A59' },
+    { num: '73K+', label: 'Subscribers', color: '#FF4D8D' },
+    { num: '3M+', label: 'Monthly views', color: '#9B6BFF' },
+    { num: '500+', label: 'Brand collaborations', color: '#FF7A59' },
     { num: '250K', label: 'Podcast listens', color: '#2FB6FF' },
   ],
   ru: [
-    { num: '120K+', label: 'Подписчиков на всех платформах', color: '#FF4D8D' },
-    { num: '8M+', label: 'Просмотров в месяц', color: '#9B6BFF' },
-    { num: '40+', label: 'Коллабораций с брендами', color: '#FF7A59' },
+    { num: '73K+', label: 'Подписчиков', color: '#FF4D8D' },
+    { num: '3M+', label: 'Просмотров в месяц', color: '#9B6BFF' },
+    { num: '500+', label: 'Коллабораций с брендами', color: '#FF7A59' },
     { num: '250K', label: 'Прослушиваний подкаста', color: '#2FB6FF' },
   ],
 };
 
-const BRANDS = ['STUDIO', 'MAISON', 'GLOW+', 'NOVA', 'LUME', 'VERTE'];
+const BRANDS = [
+  'Sam Express',
+  'Ustaxx',
+  'Novamed',
+  'Papa Jacks',
+  'Getlogan',
+  'Atlantic Union',
+  'Hally Express',
+  'Smile Burger',
+  'Alaaddin Kitchen',
+  'Fitspace',
+  "Luxor Men's Club",
+  'Adel Flowers',
+];
 
 const SOCIALS = [
   { name: 'Instagram', handle: '@nurkyzkou_', url: 'https://www.instagram.com/nurkyzkou_/' },
