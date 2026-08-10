@@ -11,7 +11,7 @@
  * Environment: YT_CHANNEL_ID overrides the channel, COUNT the number of entries.
  */
 
-import { writeFile } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
 
 const CHANNEL_ID = process.env.YT_CHANNEL_ID || 'UC8JyIR56W9pxa-9riSs4OXg';
 const COUNT = Number(process.env.COUNT || 6);
@@ -29,6 +29,18 @@ const main = async () => {
 
   const episodes = parseFeed(await res.text()).slice(0, COUNT);
   if (!episodes.length) throw new Error('feed contained no entries');
+
+  // Only rewrite when the channel actually changed. The file is committed by CI,
+  // so stamping a fresh timestamp every run would produce a commit — and a
+  // redeploy — every few hours for no reason.
+  const previous = await readFile(OUTPUT, 'utf8').catch(() => null);
+  if (previous) {
+    const before = JSON.parse(previous).episodes;
+    if (JSON.stringify(before) === JSON.stringify(episodes)) {
+      console.log(`No change — ${episodes.length} episodes already current.`);
+      return;
+    }
+  }
 
   const payload = {
     channelId: CHANNEL_ID,
