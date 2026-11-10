@@ -1,14 +1,23 @@
 {
   "channelId": "UC8JyIR56W9pxa-9riSs4OXg",
-  "updated": "2026-11-10T16:50:18.572Z",
+  "updated": "2026-11-10T22:56:04.253Z",
   "episodes": [
+    {
+      "videoId": "yBEoG2XbfWY",
+      "title": "Мигранттарга баштапкы төлөмсүз, бөлүп төлөө шарты менен үй алуу мүмкүнчүлүгүн сунуштайбыз!",
+      "url": "https://www.youtube.com/watch?v=yBEoG2XbfWY",
+      "published": "2026-11-10T18:51:21+00:00",
+      "thumbnail": "https://i2.ytimg.com/vi/yBEoG2XbfWY/hqdefault.jpg",
+      "views": 37,
+      "episodeNumber": null
+    },
     {
       "videoId": "JCtYJ_Zl3MM",
       "title": "Кыргызстанга барып саясатка кайтам!",
       "url": "https://www.youtube.com/watch?v=JCtYJ_Zl3MM",
       "published": "2026-10-29T01:50:45+00:00",
       "thumbnail": "https://i3.ytimg.com/vi/JCtYJ_Zl3MM/hqdefault.jpg",
-      "views": 13029,
+      "views": 13072,
       "episodeNumber": null
     },
     {
@@ -17,7 +26,7 @@
       "url": "https://www.youtube.com/watch?v=o52dP7hOF9Y",
       "published": "2026-10-02T06:33:30+00:00",
       "thumbnail": "https://i4.ytimg.com/vi/o52dP7hOF9Y/hqdefault.jpg",
-      "views": 3271,
+      "views": 3274,
       "episodeNumber": null
     },
     {
@@ -26,7 +35,7 @@
       "url": "https://www.youtube.com/watch?v=w_cSQhnGcEQ",
       "published": "2026-09-21T23:28:39+00:00",
       "thumbnail": "https://i4.ytimg.com/vi/w_cSQhnGcEQ/hqdefault.jpg",
-      "views": 52708,
+      "views": 52718,
       "episodeNumber": null
     },
     {
@@ -44,16 +53,7 @@
       "url": "https://www.youtube.com/watch?v=IjO_OV2XS-M",
       "published": "2026-08-11T10:29:56+00:00",
       "thumbnail": "https://i2.ytimg.com/vi/IjO_OV2XS-M/hqdefault.jpg",
-      "views": 97639,
-      "episodeNumber": null
-    },
-    {
-      "videoId": "pmhnD-x-yDY",
-      "title": "Была в абьюзивных отношениях, потеряла второго ребенка,после избиение мужа.",
-      "url": "https://www.youtube.com/watch?v=pmhnD-x-yDY",
-      "published": "2026-06-21T13:55:22+00:00",
-      "thumbnail": "https://i1.ytimg.com/vi/pmhnD-x-yDY/hqdefault.jpg",
-      "views": 6231,
+      "views": 97706,
       "episodeNumber": null
     }
   ]
